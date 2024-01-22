@@ -56,3 +56,13 @@ up, means adding more power to a single server, such as more memory. Horizontal 
 scaling out, means adding more servers.
 
 ### Layering
+
+The Three Principal Layers: presentation, domain, and data source.
+
+| Layer      | Responsabilities |
+| ----------- | ----------- |
+| Presentation      | Provision of services display of information (e.g., in Windowes or HTML, handling of user request (mouse-clicks, keyboard hits), HTTP requests, command-line invocations, batch API)       |
+| Domain   | Logic thjat is the real point of the system        |
+| Data Source   | Communication with databases, messaging systems, transaction, managers, other packages        |
+
+
