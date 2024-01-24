@@ -148,12 +148,58 @@ Record Set.
 
 When using the Gateway you can end up with the Domain Model coupled to the schema of the database.
 As a result there's some transformation from the fields of the Gateway to the fields of the domain
-objects, and this transformation complicates your domain objects. A better route is to isolate the
-Domain Model from the database completely, by making your indirection layer entirely responsible for
-the mapping between domain objects and database tables. This Data Mapper handles all of the loading
-and storing between the database and the Domain Model and allows both to vary independently. It's
-the most complicated of the database mapping architectures, but its benefit is complete isolation of
-the two layers.
+objects, and this transformation complicates your domain objects.
 
+A better route is to isolate the Domain Model from the database completely, by making your
+indirection layer entirely responsible for the mapping between domain objects and database tables.
+This Data Mapper handles all of the loading and storing between the database and the Domain Model
+and allows both to vary independently. It's the most complicated of the database mapping
+architectures, but its benefit is complete isolation of the two layers.
 
-....
+I don't recommend using a Gateway as the primary persistence mechanism for a Domain Model. If the
+domain logic is simple and you have a close correspondence between classes and tables, Active Record
+is the simple way to go. If you have something more complicated, Data Mapper is what you need.
+
+OO databases exist, but they never gained popularity and never where backed up by big vendors as the
+relational dabases are. Also, commercial O/R mapping tools exist.
+
+#### The Behavioral Problem
+
+When working with objects, it might seem as a trivial problem the fact that we need to save and load
+them from the databse. but what happens if you read some ojects and want ot modify them or modify
+other objects based on data from the objects you read, what happens if somone else changed the state
+of the objects you read in the database. This is where the concept of Unit Of Work appears.
+
+As you load objects, you have to be wary about loading the same one twice. If you do that, you'll
+have two in-memory objects that correspond to a single database row. Update them both, and
+everything gets very confusing. To deal with this you need to keep a record of every row you read in
+an Identity Map . Each time you read in some data, you check the Identity Map first to make sure
+that you don't already have it. If the data is already loaded, you can return a second reference to
+it. That way any updates will be properly coordinated. As a benefit you may also be able to avoid a
+database call since the Identity Map also doubles as a cache for the database. Don't forget,
+however, that the primary purpose of an Identity Map is to maintain correct identities, not to boost
+performance.
+
+With many objects connected together any read of any object can pull an enormous object graph out of
+the database. To avoid such inefficiencies you need to reduce what you bring back yet still keep the
+door open to pull back more data if you need it later on. Lazy Load relies on having a placeholder
+for a reference to an object.
+
+#### Reading the data
+
+When reading in data I like to think of the methods as finders that wrap SQL select statements with
+a method-structured interface. Thus, you might have methods such as find(id) or findForCustomer(
+customer).
+
+When reading in data I like to think of the methods as finders that wrap SQL select statements with
+a method-structured interface. Thus, you might have methods such as find(id) or findForCustomer(
+customer). Clearly these methods can get pretty unwieldy if you have 23 different clauses in your
+select statements, but these are, thankfully, rare.
+
+Try to pull back multiple rows at once. In particular, never do repeated queries on the same table
+to get multiple rows. It's almost always better to pull back too much data than too little (although
+you have to be wary of locking too many rows with pessimistic concurrency control).
+
+#### Structural Mapping Patterns
+
+...
