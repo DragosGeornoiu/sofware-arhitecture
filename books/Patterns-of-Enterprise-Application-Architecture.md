@@ -202,4 +202,53 @@ you have to be wary of locking too many rows with pessimistic concurrency contro
 
 #### Structural Mapping Patterns
 
+##### Mapping Relationships
+
+The way a structure is mapped in a OO language is not translated always in the same way when mapped
+to a table structure. For example an object having a collection of other objects will hold a
+reference to this object in the OO language. In the table structure the referenced objects will hold
+the reference (foreign key) to the initial object.
+
+##### Inheritance
+
+Three options on handling inheritance: Single Table Inheritance, Concrete Table Inheritance and
+Class Table Inheritance.
+
+#### Building the Mapping
+
+When you map to a relational database, there are essentially three situations that you encounter:
+
+1) You choose the schema yourself.
+2) You have to map to an existing schema, which can't be changed.
+3) You have to map to an existing schema, but changes to it are negotiable.
+
+#### Using Metadata
+
+Metadata Mapping is based on boiling down the mapping into a metadata file that details how columns
+in the database map to fields in objects.
+
+#### Database Connections
+
+In most scenarios you will use a connection pool and probably it is abstracted enaugh so that even
+thaugh you use "open" and "close" methods on a connection, it is actually only returned to the
+connection pool.
+
+Since connections are so tied to transactions, a good way to manage them is to tie them to a
+transaction. Open a connection when you begin a transaction, and close it when you commit or roll
+back.
+
+#### Some Miscellaneous Points
+
+Using "select  *" should generally be avoided.
+
+It's always worth making the effort to use static SQL that can be precompiled, rather than dynamic
+SQL that has to be compiled each time. Most platforms give you a mechanism for precompiling SQL. A
+good rule of thumb is to avoid using string concatenation to put together SQL queries.
+
+Many environments give you the ability to batch multiple SQL queries into a single database call. I
+haven't done that for these examples, but it's certainly a tactic you should use in production code.
+How you do it varies with the platform.
+
+### Web Presentation
+
 ...
