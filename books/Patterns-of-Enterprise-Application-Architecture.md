@@ -251,4 +251,39 @@ How you do it varies with the platform.
 
 ### Web Presentation
 
-...
+Model View Controller.
+
+#### View Patterns
+
+1) Template View
+2) Transform View
+3) Two Step View
+
+Transform View and Template View are single stage. Two Step View is a varation that can be applied
+to either
+
+Template View allows you to write the presentation in the structure of the page and embed markers
+into the page to indicate where dynamic content needs to go. Quite a few popular platforms are based
+on this pattern, many of which are the server pages technologies (ASP, JSP, PHP) that allow you to
+put a full programming language into the page. This clearly provides a lot of power and flexibility;
+sadly, it also leads to very messy code that's difficult to maintain.
+
+The Transform View uses a transform style of program. The usual example is XSLT. This can be very
+effective if you're working with domain data that's in XML format or can easily be converted to it.
+An input controller picks the appropriate XSLT stylesheet and applies it to XML gleaned from the
+model.
+
+#### Input Controller Pastterns
+
+There are two patterns for the input controller.
+
+The most common is an input controller object for every page on your Website. In the simplest case
+this Page Controller can be a server page itself, combining the roles of view and input controller.
+
+Front Controller goes further into separating between the responsibility of handling the Http
+request and deciding what to do with it by having only one object handling all requests. This single
+handler interprets the URL to figure out what kind of request it is dealing with and creates a
+separate object to process it.
+
+### Concurrency
+
