@@ -273,7 +273,7 @@ effective if you're working with domain data that's in XML format or can easily 
 An input controller picks the appropriate XSLT stylesheet and applies it to XML gleaned from the
 model.
 
-#### Input Controller Pastterns
+#### Input Controller Patterns
 
 There are two patterns for the input controller.
 
@@ -287,3 +287,52 @@ separate object to process it.
 
 ### Concurrency
 
+#### Concurrency Problems
+
+#### Execution Contexts
+
+#### Isolation and immutability
+
+The problems of concurrency have been around for a while, and software people have come up with
+various solutions. For enterprise applications two solutions are particularly important: isolation
+and immutability.
+
+#### Optimistic and Pessimistic Concurrency Control
+
+What happens when we have mutable data that we can't isolate? In broad terms there are two forms of
+concurrency control that we can use: optimistic and pessimistic.
+
+A good way of thinking about this is that an optimistic lock is about conflict detection while a
+pessimistic lock is about conflict prevention. As it turns out real source code control systems can
+use either type, although these days most source code developers prefer to work with optimistic
+locks. (There is a reasonable argument that says that optimistic locking isn't really locking, but
+we find the terminology too convenient, and widespread, to ignore.)
+
+#### Transactions
+
+ACID. SQL Isolation levels.
+
+#### Patterns for Offline Concurrency Control
+
+Our first choice for handling offline concurrency problems is Optimistic Offline Lock, which
+essentially uses optimistic concurrency control across the business transactions.
+
+The limitation of Optimistic Offline Lock is that you only find out that a business transaction is
+going to fail when you try to commit it, and in some circumstances the pain of that late discovery
+is too much. Users may have put an hour's work into entering details about a lease, and if you get
+lots of failures users lose faith in the system.
+
+As an alternative we have Pessimistic Offline Lock, with which you find out early if you're in
+trouble but lose out because it's harder to program and it reduces your liveness.
+
+With either of these approaches you can save considerable complexity by not trying to manage locks
+on every object. A Coarse-Grained Lock allows you to manage the concurrency of a group of objects
+together. Another way you can make life easier for application developers is to use Implicit Lock ,
+which saves them from having to manage locks directly. Not only does this save work, it also avoids
+bugs when people forget—and these bugs are hard to find.
+
+#### Application Server Concurrency
+
+### Session State
+
+...
