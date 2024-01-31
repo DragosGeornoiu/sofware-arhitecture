@@ -335,4 +335,23 @@ bugs when people forget—and these bugs are hard to find.
 
 ### Session State
 
-...
+#### The Value of Statelessness
+
+#### Session State
+
+#### Ways to Store Session State
+
+Client Session State stores the data on the client. There are several ways to do this: encoding data
+in a URL for a Web presentation, using cookies, serializing the data into some hidden field on a Web
+form, and holding the data in objects on a rich client.
+
+Server Session State may be as simple as holding the data in memory between requests. Usually,
+however, there's a mechanism for storing the session state somewhere more durable as a serialized
+object. The object can be stored on the application server's local file system, or it can be placed
+in a shared data source. This could be a simple database table with a session ID as a key and a
+serialized object as a value.
+
+Session State is also server-side storage, but it involves breaking up the data into tables and
+fields and storing it in the database much as you would store more lasting data.
+
+### Distribution Strategies
