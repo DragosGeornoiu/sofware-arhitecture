@@ -355,3 +355,59 @@ Session State is also server-side storage, but it involves breaking up the data 
 fields and storing it in the database much as you would store more lasting data.
 
 ### Distribution Strategies
+
+#### The Allure of Distributed Objects
+
+#### Remote and Local Interfaces
+
+First Law of Distributed Object Design: Don't distribute your objects!
+
+How, then, do you effectively use multiple processors? In most cases the way to go is clustering.
+Put all the classes into a single process and then run multiple copies of that process on the
+various nodes. That way each process uses local calls to get the job done and thus does things
+faster. You can also use fine-grained interfaces for all the classes within the process and thus get
+better maintainability with a simpler programming model.
+
+#### Where You Have to Distribute
+
+#### Working with Distribution Boundary
+
+Using a Remote Facade helps minimize the difficulties that the coarse-grained interface introduces.
+This way only the objects that really need a remote service get the coarse-grained method, and it's
+obvious to the developers that they're paying that cost. Transparency has its virtues, but you don't
+want to be transparent about a potential remote call.
+
+By keeping the coarse-grained interfaces as mere facades, however, you allow people to use the
+fine-grained objects whenever they know they are running in the same process. This makes the whole
+distribution policy much more explicit. Hand in hand with Remote Facade is Data Transfer Object. Not
+only do you need coarse-grained methods, you also need to transfer coarse-grained objects. When you
+ask for an address, you need to send that information in one block. You usually can't send the
+domain object itself, because it's tied in a Web of fine-grained local inter-object references. So
+you take all the data that the client needs and bundle it in a particular object for the
+transfer—hence the term Data Transfer Object. (Many people in the enterprise Java community use the
+term value object for this, but this causes a clash with other meanings of the term Value Object).
+The Data Transfer Object appears on both sides of the wire, so it's important that it not reference
+anything that isn't shared over the wire. This boils down to the fact that a Data Transfer Object
+usually only references other Data Transfer Objects and fundamental objects such as strings.
+
+Another route to distribution is to have a broker that migrates objects between processes. The idea
+here is to use a Lazy Load scheme where, instead of lazy reading from a database, you move objects
+across the wire. The hard part of this is ensuring that you don't end up with lots of remote calls.
+I haven't seen anyone try this in an application, but some O/R mapping tools (e.g., TOPLink) have
+this facility, and I've heard some good reports about it
+
+### Putting It All Together
+
+Technical practices to consider: continuous integration, test driven development and refactoring.
+
+#### Starting with the Domain Layer
+
+The start of the process is deciding which domain logic approach to go with. The three main
+contenders are Transaction Script, Table Module, and Domain Model.
+
+As indicated previously, the strongest force that drives you through this trio is the complexity of
+the domain logic, something currently impossible to quantify, or even qualify, with any degree of
+precision. But other factors also play in the decision, in particular, the difficulty of the
+connection with a database.
+
+#### Down to the Data Source Layer
