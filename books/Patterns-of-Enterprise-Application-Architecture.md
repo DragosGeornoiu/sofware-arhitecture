@@ -6,6 +6,9 @@
 
 ## Notes
 
+Have to keep in mind that this book was written in 2002. Struts was a popular java framework at the
+moment this book was written.
+
 ### Common performance related terms
 
 Response time is the amount of time it takes for the system to process a request from the outside.
@@ -411,3 +414,113 @@ precision. But other factors also play in the decision, in particular, the diffi
 connection with a database.
 
 #### Down to the Data Source Layer
+
+##### Data Source for Transaction Script
+
+The database patterns to choose from here are Row Data Gateway and Table Data Gateway. With a Row
+Data Gateway each record is read into an object with a clear and explicit interface. With Table Data
+Gateway you may have less code to write since you don't need all the accessor code to get at the
+data, but you end up with a much more implicit interface that relies on accessing a record set
+structure that's little more than a glorified map.
+
+##### Data Source Table Module
+
+The main reason to choose Table Module is the presence of a good Record Set framework. In this case
+you'll want a database mapping pattern that works well with Record Sets, and that leads you
+inexorably toward Table Data Gateway .These two patterns fit together as if it were a match made in
+heaven.
+
+##### Data Source for Domain Model
+
+If your Domain Model is fairly simple, say a couple of dozen classes that are pretty close to the
+database, then an Active Record makes sense. If you want to decouple things a bit, you can use
+either Table Data Gateway or Row Data Gateway to do that. Whether you separate or not isn't a huge
+deal either way.
+
+As things get more complicated, you'll need to consider Data Mapper. This is the approach that
+delivers on the promise of keeping your Domain Model as independent as possible of all the other
+layers. But Data Mapper is also the most complicated one to implement. Unless you either have a
+strong team or you can find some simplifications that make the mapping easier to do, I'd strongly
+suggest getting a mapping tool.
+
+Once you choose Data Mapper most of the patterns in the O/R mapping section come into play. In
+particular I heartily recommend Unit of Work (184), which acts as a focal point for concurrency
+control.
+
+##### The Presentation Layer
+
+Your first question is whether to provide a rich-client interface or an HTML browser interface. My
+preference is to pick an HTML browser if you can get away with it and a rich client if that's not
+possible. Rich clients will usually take more effort to program, but that's because they tend to be
+more sophisticated, not so much because of the inherent complexities of the technology.
+
+For HTML route, MVC would be recommended. You're left now with two decisions, one for the controller
+and one for the view.
+
+Given a freer choice, I'd recommend Page Controller if your site is more document oriented,
+particularly if you have a mix of static and dynamic pages. More complex navigation and UI lead you
+toward a Front Controller.
+
+On the view front the choice between Template View and Transform View depends on whether your team
+uses server pages or XSLT in programming. Template Views have the edge at the moment, although I
+rather like the added testability of Transform View. If you have the need to display a common site
+with multiple looks and feels, you should consider Two Step View.
+
+How you communicate with the lower layers depends on what kind of layers they are and whether
+they're always going to be in the same process. My preference is to have everything run in one
+process if you can—that way you don't have to worry about slow inter-process calls. If you can't do
+that, you should wrap your domain layer with Remote Facade and use Data Transfer Object to
+communicate to the Web server.
+
+#### Some Techonoly-Specific Advice
+
+##### Java and J2EE
+
+##### .NET
+
+##### Stored procedures
+
+They're often the fastest way to do things since they run in the same process as your database and
+thus reduce the laggardly remote calls. However, most stored procedure environments don't give you
+good structuring mechanisms for your stored procedures, and stored procedures will lock you into a
+particular database vendor. (Take previous statement with a pinch of salt, things have evolved
+somewhat from then, but the statement still holds some truth to it)
+
+For the reasons of modularity and portability a lot of people avoid using stored procedures for
+business logic. I tend to side with that view unless there's a strong performance gain to be had,
+which, to be fair, there often is. In that case I take a method from the domain layer and happily
+move it into a stored procedure. I
+
+##### Web Services
+
+#### Other layering Schemes
+
+"Brown model" (name did not stick) has five layers:  presentation, controller/mediator, domain, data
+mapping, and data source. Essentially it places additional mediating layers between the basic three
+layers. The controller/mediator mediates between the presentation and domain layers, while the data
+mapping layer mediates between the domain and data source layers. I find that the mediating layers
+are useful some of the time but not all of the time, so I describe them in terms of patterns. The
+Application Controller is the mediator between the presentation and domain, and the Data Mapper is
+the mediator between the data source and the domain.
+
+CoreJ2EE layering pattern. Here the layers are client, presentation, business, integration, and
+resource. Simple correspondences exist for the business and integration layers. The resource layer
+comprises external services that the integration layer connects to. The main difference is that they
+split the presentation layer between the part that runs on the client (client) and the part that
+runs on a server (presentation). This is often a useful split, but again it's not one that's needed
+all the time.
+
+The Microsoft DNA architect (Kirtland) defines three layers: presentation, business, and data
+access, that correspond pretty directly to the three layers I use here. The biggest shift occurs in
+the way that data is passed up from the data access layers. In Microsoft DNA all the layers operate
+on record sets that result from SQL queries issued by the data access layer. This introduces an
+apparent coupling in that both the business and the presentation layers know about the database.
+
+Marinescu Layering provides five layers. The presentation is split into two layers, reflecting the
+separation of an Application Controller. The domain is also split, with a Service Layer built on a
+Domain Model, reflecting the common idea of splitting a domain layer into two parts. This is a
+common approach, reinforced by the limitations of EJB as a Domain Model.
+
+
+### Domain Logic Patterns
+
