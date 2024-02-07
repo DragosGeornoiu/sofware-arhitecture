@@ -521,6 +521,40 @@ separation of an Application Controller. The domain is also split, with a Servic
 Domain Model, reflecting the common idea of splitting a domain layer into two parts. This is a
 common approach, reinforced by the limitations of EJB as a Domain Model.
 
-
 ### Domain Logic Patterns
 
+#### Transaction Script
+
+Organizes business logic by procedures where each procedure handles a single request from the
+presentation.
+
+With Transaction Script the domain logic is primarily organized by the transactions that you carry
+out with the system. If your need is to book a hotel room, the logic to check room availability,
+calculate rates, and update the database is found inside the Book Hotel Room procedure.
+
+You can organize your Transaction Scripts into classes in two ways. The most common is to have
+several Transaction Scripts in a single class, where each class defines a subject area of related
+Transaction Scripts. This is straightforward and the best bet for most cases. The other way is to
+have each Transaction Script in its own class, using the Command pattern [Gang of Four]. In this
+case you define a supertype for your commands that specifies some execute method in which
+Transaction Script logic fits. The advantage of this is that it allows you to manipulate instances
+of scripts as objects at runtime, although I've rarely seen a need to do this with the kinds of
+systems that use Transaction Scripts to organize domain logic.
+
+When to Use It? The glory of Transaction Script is its simplicity. Organizing logic this way is
+natural for applications with only a small amount of logic, and it involves very little overhead
+either in performance or in understanding. As the business logic gets more complicated, however, it
+gets progressively harder to keep it in a well-designed state. One particular problem to watch for
+is its duplication between transactions. Since the whole point is to handle one transaction, any
+common code tends to be duplicated.
+
+However much of an object bigot you become, don't rule out Transaction Script. There are a lot of
+simple problems out there, and a simple solution will get you up and running much faster.
+
+#### Domain Model
+
+...
+
+#### Table Module
+
+#### Service Layer
