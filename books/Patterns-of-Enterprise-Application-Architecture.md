@@ -553,8 +553,43 @@ simple problems out there, and a simple solution will get you up and running muc
 
 #### Domain Model
 
-...
+Putting a Domain Model in an application involves inserting a whole layer of objects that model the
+business area you're working in. You'll find objects that mimic the data in the business and objects
+that capture the rules the business uses. Mostly the data and process are combined to cluster the
+processes close to the data they work with.
+
+There are two styles of Domain Model in the field. A simple Domain Model looks very much like the
+database design with mostly one domain object for each database table. A rich Domain Model can look
+different from the database design, with inheritance, strategies, and other [Gang of Four] patterns,
+and complex webs of small interconnected objects. A rich Domain Model is better for more complex
+logic, but is harder to map to the database. A simple Domain Model can use Active Record (160),
+whereas a rich Domain Domain Model requires Data Mapper.
+
+A common concern with domain logic is bloated domain objects. As you build a screen to manipulate
+orders you'll notice that some of the order behavior is only needed only for it. If you put these
+responsibilities on the order, the risk is that the Order class will become too big because it's
+full of responsibilities that are only used in a single use case.
+
+The problem with separating usage-specific behavior is that it can lead to duplication. Behavior
+that's separated from the order is harder to find, so people tend to not see it and duplicate it
+instead. Duplication can quickly lead to more complexity and inconsistency, but I've found that
+bloating occurs much less frequently than predicted. If it does occur, it's relatively easy to see
+and not difficult to fix. My advice is not to separate usage-specific behavior. Put it all in the
+object that's the natural fit. Fix the bloating when, and if, it becomes a problem
+
+If you have complicated and everchanging business rules involving validation, calculations, and
+derivations, chances are that you'll want an object model to handle them. On the other hand, if you
+have simple not-null checks and a couple of sums to calculate, a Transaction Script is a better bet.
+
+If you're using Domain Model, my first choice for database interaction is Data Mapper. This will
+help keep your Domain Model independent from the database and is the best approach to handle cases
+where the Domain Model and database schema diverge.
+
+When you use Domain Model you may want to consider Service Layer (133) to give your Domain Model a
+more distinct API.
 
 #### Table Module
+
+...
 
 #### Service Layer
