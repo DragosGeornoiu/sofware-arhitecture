@@ -590,6 +590,26 @@ more distinct API.
 
 #### Table Module
 
-...
+A single instance that handles the business logic for all rows in a database table or view.
+
+The primary distinction with Domain Model is that, if you have many orders, a Domain Model will have
+one order object per order while a Table Module will have one object to handle all orders.
+
+Table Module is very much based on table-oriented data, so obviously using it makes sense when
+you're accessing tabular data using Record Set. It also puts that data structure very much in the
+center of the code, so you also want the way you access the data structure to be fairly
+straightforward.
+
+Table Module doesn't give you the full power of objects in organizing complex logic. You can't have
+direct instance-to-instance relationships, and polymorphism doesn't work well. So, for handling
+complicated domain logic, a Domain Model is a better choice
+
+If the objects in a Domain Model and the database tables are relatively similar, it may be better to
+use a Domain Model that uses Active Record. Table Module works better than a combination of Domain
+Model and Active Record when other parts of the application are based on a common table-oriented
+data structure. That's why you don't see Table Module very much in the Java environment, although
+that may change as row sets become more widely used.
 
 #### Service Layer
+
+...
