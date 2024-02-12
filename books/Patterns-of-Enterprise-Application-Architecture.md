@@ -612,4 +612,31 @@ that may change as row sets become more widely used.
 
 #### Service Layer
 
+Defines an application's boundary with a layer of services that establishes a set of available
+operations and coordinates the application's response in each operation.
+
+The two basic implementation variations are the domain facade approach and the operation script
+approach
+
+Identifying the operations needed on a Service Layer boundary is pretty straightforward. They're
+determined by the needs of Service Layer clients, the most significant (and first) of which is
+typically a user interface. Since a user interface is designed to support the use cases that actors
+want to perform with an application, the starting point for identifying Service Layer operations is
+the use case model and the user interface design for the application.
+
+Disappointing as it is, many of the use cases in an enterprise application are fairly boring "
+CRUD" (create, read, update, delete) use cases on domain objectscreate one of these, read a
+collection of those, update this other thing. My experience is that there's almost always a
+one-to-one correspondence between CRUD use cases and Service Layer operations.
+
+When to Use It? The benefit of Service Layer is that it defines a common set of application operations available to
+many kinds of clients and it coordinates an application's response in each operation. The response
+may involve application logic that needs to be transacted atomically across multiple transactional
+resources. Thus, in an application with more than one kind of client of its business logic, and
+complex responses in its use cases involving multiple transactional resources, it makes a lot of
+sense to include a Service Layer with container-managed transactions, even in an undistributed
+architecture.
+
+###  Data Source Architectural Patterns
+
 ...
