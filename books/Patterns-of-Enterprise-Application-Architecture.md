@@ -629,14 +629,40 @@ CRUD" (create, read, update, delete) use cases on domain objectscreate one of th
 collection of those, update this other thing. My experience is that there's almost always a
 one-to-one correspondence between CRUD use cases and Service Layer operations.
 
-When to Use It? The benefit of Service Layer is that it defines a common set of application operations available to
-many kinds of clients and it coordinates an application's response in each operation. The response
-may involve application logic that needs to be transacted atomically across multiple transactional
-resources. Thus, in an application with more than one kind of client of its business logic, and
-complex responses in its use cases involving multiple transactional resources, it makes a lot of
-sense to include a Service Layer with container-managed transactions, even in an undistributed
-architecture.
+When to Use It? The benefit of Service Layer is that it defines a common set of application
+operations available to many kinds of clients and it coordinates an application's response in each
+operation. The response may involve application logic that needs to be transacted atomically across
+multiple transactional resources. Thus, in an application with more than one kind of client of its
+business logic, and complex responses in its use cases involving multiple transactional resources,
+it makes a lot of sense to include a Service Layer with container-managed transactions, even in an
+undistributed architecture.
 
-###  Data Source Architectural Patterns
+### Data Source Architectural Patterns
+
+#### Table Data Gateway
+
+An object that acts as a Gateway to a database table. One instance handles all the rows in the
+table. A Table Data Gateway has a simple interface, usually consisting of several find methods to
+get data from the database and update, insert, and delete methods
+
+The trickiest thing about a Table Data Gateway is how it returns information from a query. Even a
+simple find-by-ID query will return multiple data items.
+
+When to Use It? As with Row Data Gateway the decision regarding Table Data Gateway is first whether
+to use a Gateway (466) approach at all and then which one. I find that Table Data Gateway is
+probably the simplest database interface pattern to use, as it maps so nicely onto a database table
+or record type. It also makes a natural point to encapsulate the precise access logic of the data
+source. I use it least with Domain Model because I find that Data Mapper (165) gives a better
+isolation between the Domain Model and the database.
+
+Table Data Gateway works particularly well with Table Module, where it produces a record set data
+structure for the Table Module to work on. Indeed, I can't really imagine any other database-mapping
+approach for Table Module.
+
+#### Row Data Gateway
 
 ...
+
+#### Active Record
+
+#### Data Mapper
