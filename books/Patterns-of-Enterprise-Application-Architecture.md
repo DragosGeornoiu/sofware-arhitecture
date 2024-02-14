@@ -4,6 +4,10 @@
 
 [comment]: <> (TODO)
 
+## Main keywords
+
+-
+
 ## Notes
 
 Have to keep in mind that this book was written in 2002. Struts was a popular java framework at the
@@ -661,8 +665,32 @@ approach for Table Module.
 
 #### Row Data Gateway
 
-...
+An object that acts as a Gateway to a single record in a data source. There is one instance per row.
+
+With a Row Data Gateway you're faced with the questions of where to put the find operations that
+generate this pattern. It often makes sense to have separate finder objects so that each table in a
+relational database will have one finder class and one gateway class for the results
+
+It's often hard to tell the difference between a Row Data Gateway and an Active Record. The crux of
+the matter is whether there's any domain logic present; if there is, you have an Active Record. A
+Row Data Gateway should contain only database access logic and no domain logic.
+
+When to Use It? The choice of Row Data Gateway often takes two steps: first whether to use a gateway
+at all and second whether to use Row Data Gateway or Table Data Gateway Use Row Data Gateway most
+often when I'm using a Transaction Script. In this case it nicely factors out the database access
+code and allows it to be reused easily by different Transaction Scripts. I don't use a Row Data
+Gateway when I'm using a Domain Model. If the mapping is simple, Active Record does the same job
+without an additional layer of code. If the mapping is complex, Data Mapper works better, as it's
+better at decoupling the data structure from the domain objects because the domain objects don't
+need to know the layout of the database.
+
+If you use Transaction Script with Row Data Gateway, you may notice that you have business logic
+that's repeated across multiple scripts; logic that would make sense in the Row Data Gateway. Moving
+that logic will gradually turn your Row Data Gateway into an Active Record, which is often good as
+it reduces duplication in the business logic.
 
 #### Active Record
+
+
 
 #### Data Mapper
