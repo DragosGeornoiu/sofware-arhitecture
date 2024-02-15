@@ -6,7 +6,17 @@
 
 ## Main keywords
 
--
+[comment]: <> (TODO add maine keyword discussed in the book too be able to check if you understood enaugh about each)
+
+....
+
+- Table Data Gateway
+- Row Data Gateway
+- Active Record
+- Data Mapper
+- Lazy Loading
+- Separated Interface Pattern
+- Layer Superype
 
 ## Notes
 
@@ -691,6 +701,65 @@ it reduces duplication in the business logic.
 
 #### Active Record
 
+An object that wraps a row in a database table or view, encapsulates the database access, and adds
+domain logic on that data.
 
+The essence of an Active Record is a Domain Model in which the classes match very closely the record
+structure of an underlying database. Each Active Record is responsible for saving and loading to the
+database and also for any domain logic that acts on the data.
+
+The Active Record class typically has methods that do the following:
+
+- Construct an instance of the Active Record from a SQL result set row
+- Construct a new instance for later insertion into the table
+- Static finder methods to wrap commonly used SQL queries and return Active Record objects
+- Update the database and insert into it the data in the Active Record
+- Get and set the fields
+- Implement some pieces of business logic
+
+When to Use It? Active Record is a good choice for domain logic that isn't too complex, such as
+creates, reads, updates, and deletes. Derivations and validations based on a single record work well
+in this structure.
+
+In an initial design for a Domain Model the main choice is between Active Record and Data Mapper.
+Active Record has the primary advantage of simplicity. It's easy to build Active Records, and they
+are easy to understand. Their primary problem is that they work well only if the Active Record
+objects correspond directly to the database tables: an isomorphic schema. If your business logic is
+complex, you'll soon want to use your object's direct relationships, collections, inheritance, and
+so forth. These don't map easily onto Active Record, and adding them piecemeal gets very messy.
+That's what will lead you to use Data Mapper instead. Another argument against Active Record is the
+fact that it couples the object design to the database design. This makes it more difficult to
+refactor either design as a project goes forward.
 
 #### Data Mapper
+
+A layer of Mappers that moves data between objects and a database while keeping them independent of
+each other and the mapper itself. With Data Mapper the in-memory objects needn't know even that
+there's a database present, they need no SQL interface code.
+
+A query request from the client will usually lead to a graph of objects being loaded, with the
+mapper designer deciding exactly how much to pull back in one go.Since objects are very
+interconnected, you usually have to stop pulling dsata back at some point, otherwise you're likely
+to pull back the entire database with a request. Mapping layers have techniques to teal with this
+while minimizing the impact on the in-memory objects, using Lazy Load.
+
+When to use it? The primary occasion for using Data Mapper is when you want the database schema and
+the object model to evolve independently. The most common case for this is with a Domain Model.
+
+The price, of course, is the extra layer that you don't get with Active Record(160), so the test for
+using these patterns is the complexity of the business logic. If you have fairly simple business
+logic, you probably won't need a Domain Model or a Data Mapper. Keep i mind however that even though
+Data Mapper without Domain Model might not make sense, Domain Model without Data Mapper might, as
+for example using an Active Record with a Domain Model if the business logic is quite simple.
+
+To allow domain objects to invoke finder behavior I can use Separated Interface Pattern to separate
+the finder interfaces from the mappers. I can put these finder interfaces in a separate package
+that's visible to the domain layer, or, as in this case, I can put them in the domain layer itself.
+
+### Object-Relational Behavioral Patterns
+
+#### Unit of Work
+
+#### Identity Map
+
+#### Lazy Load
