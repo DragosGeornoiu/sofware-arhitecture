@@ -17,6 +17,10 @@
 - Lazy Loading
 - Separated Interface Pattern
 - Layer Superype
+- Unit of Work
+- Unit of Work caller registration
+- Unit of Work object registration
+- Unit of Work controller
 
 ## Notes
 
@@ -760,6 +764,41 @@ that's visible to the domain layer, or, as in this case, I can put them in the d
 
 #### Unit of Work
 
+Maintains a list of objects affected by a business transaction and coordinates the writing out of
+changes and the resolution of concurrency problems.
+
+With caller registration the user of an object has to remember to register the object with the Unit
+of Work for changes. Any objects that aren't registered won't be written out on commit. Although
+this allows forgetfulness to cause trouble, it does give flexibility in allowing people to make
+in-memory changes that they don't want written out. Still, I would argue that it's going to cause
+far more confusion than would be worthwhile. It's better to make an explicit copy for that purpose.
+
+With object registration the onus is removed from the caller. The usual trick here is to place
+registration methods in object methods. Loading an object from the database registers the object as
+clean, the setting methods register the object as dirty. For this scheme to work the Unit of Work
+needs either to be passed to the object or to be in a well-known place. Passing the Unit of Work
+around is tedious but usually no problem to have it present in some kind of session object. Even
+object registration leaves something to remember; that is, the developer of the object has to
+remember to add a registration call in the right places. The consistency becomes habitual, but is
+still an awkward bug when missed.
+
+Unit of work controller is another technique,used by the TOPLink product. The Unit of Work handles
+all reads from the database and registers clean objects whenever they're read. Rather than marking
+objects as dirty the Unit of Work takes a copy at read time and then compares the object at commit
+time. Although this adds overhead to the commit process, it allows a selective update of only those
+fields that were actually changed; it also avoids registration calls in the domain objects.
+
+Unit of Work works with any transactional resource, not just databases, so with message queues and
+transaction monitors.
+
+When to use it? The fundamental problem that Unit of Work deals with is keeping track of the various
+objects you've manipulated so that you know which ones you need to consider synchronizing your
+in-memory data with the database. If you're able to do all your work within a system transaction,
+the only objects you need to worry about are those you alter. Although Unit of Work is generally the
+best way of doing this, there are alternatives.
+
 #### Identity Map
+
+...
 
 #### Lazy Load
