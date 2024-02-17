@@ -21,6 +21,8 @@
 - Unit of Work caller registration
 - Unit of Work object registration
 - Unit of Work controller
+- Identity Map
+- 
 
 ## Notes
 
@@ -799,6 +801,28 @@ best way of doing this, there are alternatives.
 
 #### Identity Map
 
-...
+Ensures that each object gets loaded only once by keeping every loaded object in a map. Looks up
+objects using the map when referring to them.
+
+There are a number of implementation choices to worry about. Also, since Identity Maps interact with
+concurrency management you should consider Optimistic Offline Lock.
+
+How many? The decision varies between one map per class and one map for the whole session. A single
+map for the session works only if you have database-unique keys.
+
+If you have multiple maps, the obvious route is one map per class or per table, which works well if
+your database schema and object models are the same. If they look different, it's usually easier to
+base the maps on your objects rather than on your tables, as the objects shouldn't really know about
+the intricacies of the mapping
+
+Inheritance also has to be considered. It's usually easier to keep one table per inheritance three
+because otherwise you have to look in multiple maps in a polymorphic case, however this means that
+the keys should be made unique per each inheritance tree.
+
+Where to put them? If you're using Unit of Work that's by far the best place for the Identity Maps
+since the Unit of Work is the main place for keeping track of data coming in or out of the database.
+If you don't have a Unit of Work, the best bet is a Registry.
 
 #### Lazy Load
+
+...
