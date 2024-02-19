@@ -4,7 +4,7 @@
 
 [comment]: <> (TODO)
 
-## Main keywords
+## Main topics/keywords
 
 [comment]: <> (TODO add maine keyword discussed in the book too be able to check if you understood enaugh about each)
 
@@ -22,7 +22,11 @@
 - Unit of Work object registration
 - Unit of Work controller
 - Identity Map
-- 
+- Lazy Load
+- Lazy Load by Lazy Initialization
+- Lazy Load by Virtual Proxy
+- Lazy Load by Value Holder
+- Lazy Load by Ghost
 
 ## Notes
 
@@ -825,4 +829,29 @@ If you don't have a Unit of Work, the best bet is a Registry.
 
 #### Lazy Load
 
+An object that doesn't contain all the data you need but knows how to get it. For loading data from
+a database into memory it's handy to design things so that as you load an object of interest you
+also load the objects that are related to it. This makes loading easier on the developer using the
+object, who otherwise has to load all the objects explicitly.
+
+There are four main ways you can implement Lazy Load: lazy initialization, virtual proxy, value
+holder and ghost.
+
+Lazy Load is a good candidate for aspect-oriented programming.
+
+In theory, you might want a range of different degrees of laziness, but in practice you really need
+only two: a complete load and enough of a load for identification purposes in a list. Adding more
+usually adds more complexity than is worthwhile.
+
+When to use it? Deciding when to use Lazy Load is all about deciding how much you want to pull back
+from the database as you load an object and how many database calls that will require. It's usually
+pointless to use Lazy Load on a field that's stored in the same row as the rest of the objects,
+because most of the time it doesn't cost anymore to bring back extra data in a call, even if the
+data field is quite large.
+
+### Object-Relational Structural Patterns
+
+### Identity Field
+
 ...
+
