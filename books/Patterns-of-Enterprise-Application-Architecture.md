@@ -851,7 +851,26 @@ data field is quite large.
 
 ### Object-Relational Structural Patterns
 
-### Identity Field
+#### Identity Field
+
+Saves a database ID field in an object to maintain identity between an in-memory object and a
+database row.
+
+Prefer meaningless keys (some id) over meaningful keys (SSN/VIN) because you can guarantee
+uniqueness, in case of human error when writing it you cannot for meaningful keys.
+
+Prefer simple keys over compound keys because you can use the same code for all key manipulation.
+
+A table-unique key is usually fine, but a databawse-unique key is often easier to do and allows the
+usage of a single Identity Map.
+
+In case of inheritance, if you are using Concrete Table Inheritance of Class Table Inheritance, you
+should go for keys that are unique to the hierarchy rahter than unique to each table.
+
+When to Use It? Use Identity Field when there's a mapping between objects in memory and rows in a
+database. This is usually when you use Domain Model or Row Data Gateway. You don't need this mapping
+if you're using Transaction Script, Table Module, or Table Data Gateway
+
+#### Foreign Key Mapping
 
 ...
-
