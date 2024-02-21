@@ -27,6 +27,9 @@
 - Lazy Load by Virtual Proxy
 - Lazy Load by Value Holder
 - Lazy Load by Ghost
+- Identity Field
+- Foreign Key Mapping
+- 
 
 ## Notes
 
@@ -873,4 +876,15 @@ if you're using Transaction Script, Table Module, or Table Data Gateway
 
 #### Foreign Key Mapping
 
-...
+Maps an association between objects to a foreign key reference between tables.
+
+When to use it? A Foreign Key can be used for almost all associations between classes. The most
+common case where it isn't possible is with many-to-many associations. If you have a collection
+field with no back pointer, you should consider whether the many side should be a Dependent Mapping.
+if so, it can simplify your handling of the collection. If the related object is a Value Object then
+you should use Embedded Value.
+
+#### Association Table Mapping
+
+
+
