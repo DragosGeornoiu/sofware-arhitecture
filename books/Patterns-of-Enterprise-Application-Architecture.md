@@ -29,7 +29,9 @@
 - Lazy Load by Ghost
 - Identity Field
 - Foreign Key Mapping
-- 
+- Association Table Mapping
+- Dependent Mapping
+- ...
 
 ## Notes
 
@@ -886,5 +888,53 @@ you should use Embedded Value.
 
 #### Association Table Mapping
 
+Saves an association as a table with foreign keys to the tables that are linked by the association.
 
+When to Use It? The canonical case for Association Table Mapping is a many-to-many association,
+since there are really no any alternatives for that situation.
 
+#### Dependent Mapping
+
+Has one class perform the database mapping for a child class.
+
+How It Works? The basic ide behind Dependent Mappin is that one class (the dependent) relies upon
+some other class (the owner) for its database persistence. Each dependent can have only one owner
+and must have one owner
+
+For Active Record and Row Data Gateway, the dependent class won't contain any database mapping code;
+its mapping code sits in the owner. With Data Mapper there's no mapper for the dependent, the
+mapping code sits in the mapper for the owner. In a Table Data Gateway there will typically be no
+dependent class at all, all the handling of the dependent is done in the owner.
+
+In most cases every time you load an owner, you load the dependents too. If the dependents are
+expensive to load and infrequently used, you can use a Lazy Load to avoid loading the dependents
+until you need them.
+
+An important property of a dependent is that it doesn't have an Identity Field and therefore isn't
+stored in a Identity Map. It therefore cannot be loaded by a find method that looks up an ID.
+Indeed, there's no finder for a dependent since all finds are done with the owner.
+
+It's usually easier for the primary key on the database to be a composite key that includes the
+owner's primary key. No other table should have a foreign key into the dependent's table, unless
+that object has the same owner. As a result, no in-memory object other than the owner or its
+dependents should have a reference to a dependent. Strictly speaking, you can relax that rule
+providing that the reference isn't persisted to the database, but having a nonpersistent reference
+is itself a good source of confusion.
+
+If you want to update the collection of dependents you can safely delete all rows that link to the
+owner and then reinsert all the dependants. This saves you from having to do an analysis of objects
+added or removed from the owner's collection.
+
+Using Dependent Mapping complicates tracking whether the owner has changed. Any changes to the
+dependent need to mark the owner as changed so that the owner will write the changes to the
+database.
+
+When to Use It? You use Dependent Mapping when you have an object that's only referred to by one
+other object, which usually occurs when one object has a collection of dependents. For Dependent
+Mapping to work there are a number of preconditions: a dependent must have exactly one owner; there
+must be no references from any object other than the owner of the dependent;
+
+Dependent Mapping is not that recommended in the context of Unit of Work. Keeping track of thins is
+not that trivial in the context of delete and reinsert strategy for Unit of Work.
+
+#### Embedded Value
