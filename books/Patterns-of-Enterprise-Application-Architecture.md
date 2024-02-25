@@ -33,6 +33,7 @@
 - Dependent Mapping
 - Embedded Value
 - Serialized LOB
+- Single Table Inheritance
 - ...
 
 ## Notes
@@ -950,3 +951,33 @@ all Value Objects (486) should be persisted as Embedded Value, since you would n
 for them there.
 
 #### Serialized LOB
+
+Saves a graph object by serializing them into a large screen object (LOB) which it stores in a
+database field
+
+The advantages of the BLOB are that it's simple to program (if your platform supports it) and that
+it uses the minimum of space. The disadvantages are that your database must support a binary data
+type for it and that you can't reconstruct the graph without the object, so the field is utterly
+impenetrable to casual viewing. The most serious problem, however, is versioning. If you change the
+department class, you may not be able to read all its previous serializations; since data can live
+in the database for a long time, this is no small thing.
+
+The alternative is a CLOB. In this case you serialize the department graph into a text string that
+carries all the information you need. The text string can be read easily by a human viewing the row,
+which helps in casual browsing of the database. However the text aproach will usually need more
+space, and you may need to create your own parser for the textual format you use. It's also likely
+to be slower than a binary serialization. Many of the disadvantages of CLOBs can be overcome with
+XML.
+
+When to Use It? Serialized LOB isn't considered as often as it might be. XML makes it much more
+attractive since it yields a easy-to-implement textual approach. Its main disadvantage is that you
+can't query the structure using SQL. SQL extensions appear to get at XML data within a field, but
+that's still not the same (or portable).
+
+An obvious danger here is that someone may try to edit the XML by hand in the database and mess up
+the XML, making it unreadable by the load routine. More sophisticated to at would support adding a
+DTD or XML schema to a field as validation will obviously help with that.
+
+#### Single Table Inheritance
+
+...
