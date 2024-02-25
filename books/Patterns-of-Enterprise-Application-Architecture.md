@@ -31,6 +31,8 @@
 - Foreign Key Mapping
 - Association Table Mapping
 - Dependent Mapping
+- Embedded Value
+- Serialized LOB
 - ...
 
 ## Notes
@@ -938,3 +940,13 @@ Dependent Mapping is not that recommended in the context of Unit of Work. Keepin
 not that trivial in the context of delete and reinsert strategy for Unit of Work.
 
 #### Embedded Value
+
+Maps an object into several fields of another object's table.
+
+When to Use It? The simplest cases for Embedded Value are the clear, simple Value Objects like money
+and date range. Since Value Objects (486) don't have identity, you can create and destroy them
+easily without worrying about such things as Identity Maps (195) to keep them all in sync. Indeed,
+all Value Objects (486) should be persisted as Embedded Value, since you would never want a table
+for them there.
+
+#### Serialized LOB
