@@ -34,6 +34,9 @@
 - Embedded Value
 - Serialized LOB
 - Single Table Inheritance
+- Single Table Inheritance
+- Class Table Inheritance
+- Concrete Table Inheritance
 - ...
 
 ## Notes
@@ -980,4 +983,34 @@ DTD or XML schema to a field as validation will obviously help with that.
 
 #### Single Table Inheritance
 
-...
+Represents an inheritance hierarchy of classes as a single table that has columns for all the fields
+of the various classes.
+
+When loading an object into memory you need to know which class to instantiate, for this you have a
+field in the table that indicates which class should be used.
+
+#### Class Table Inheritance
+
+Represents an inheritance hierarchy of classes with one table for each class.
+
+In order to map them in the tables, you either keep the same primary key in the superclass and the
+concrete class (key 101 in footballers table and the row of key 101 in the players table correspond
+to the same domain object) or you let each table have its own primarty keys and use foreign keys
+into the superclass table to tie the rows together.
+
+#### Concrete Table Inheritance
+
+Represents an inheritance hierarchy of classes with one table per concrete class in the hierarchy.
+
+You need to pay attention to the keys with this pattern. Punningly, the key thing is to ensure that
+keys are unique not just to a table but to all the tables from a hierarchy. A classic example of
+where you need this is if you have a collection of players and you're using Identity Field (216)
+with table-wide keys. If keys can be duplicated between the tables that map the concrete classes,
+you'll get multiple rows for a particular key value. us, you thus need a key allocation system that
+keeps track of key usage across tables; also, you can't rely on the database's primary key
+uniqueness mechanism.
+
+#### Inheritance Mappers
+
+.....
+
