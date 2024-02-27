@@ -37,6 +37,7 @@
 - Single Table Inheritance
 - Class Table Inheritance
 - Concrete Table Inheritance
+- Inheritance Mappers
 - ...
 
 ## Notes
@@ -1012,5 +1013,22 @@ uniqueness mechanism.
 
 #### Inheritance Mappers
 
-.....
+A structure to organize database mappers that handle inheritance hierarchies.
+
+When you map from an object-oriented inheritance hierarchy in memory to a relational database you
+have to minimize the amount of code needed to save and load the data to the database. You also want
+to provide both abstract and concrete mapping behavior that allows you to save or load a superclass
+or a subclass.
+
+When to Use It? This general scheme makes sense for any inheritance based database mapping. The
+alternatives involve such things as duplicating superclass mapping code among the concrete mappers
+and folding the player's interface into the abstract player mapper class. The former is a heinous
+crime, and the latter is possible but leads to a player mapper class that's messy and confusing. On
+the whole, then, its hard to think of a good alternative to this pattern.
+
+### Object-Relational Metadata Mapping
+
+#### Metadata Mapping
+#### Query Object
+#### Repository
 
