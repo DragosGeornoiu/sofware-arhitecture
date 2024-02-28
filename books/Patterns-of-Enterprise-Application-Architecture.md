@@ -38,6 +38,9 @@
 - Class Table Inheritance
 - Concrete Table Inheritance
 - Inheritance Mappers
+- Metadata Mapping
+- Query Object
+- Repository
 - ...
 
 ## Notes
@@ -1029,6 +1032,37 @@ the whole, then, its hard to think of a good alternative to this pattern.
 ### Object-Relational Metadata Mapping
 
 #### Metadata Mapping
+
+Holds details of object-relational mapping in metadata.
+
+A Metadata Mappiong allows developers to define the mappiongs in a simple tabular form, which can
+then be processed by generic code to carry out the details of reading, inserting and updating the
+data.
+
+How It Works? The biggest decision in using Metadata Mapping is how the information in the metadata
+manifests itself in terms of running code. There are two main routes to take: code generation and
+reflective programming.
+
+I usually counsel against reflection, partly because it's slow but mainly because it often causes
+code that's hard to debug. Even so, reflection is actually appropriate for database mapping. Since
+you're reading in the names of fields and methods from a file, you're taking full advantage of
+reflection's flexibility.
+
+When to use it? Metadata Mapping can greatly reduce the amount of work needed to handle database
+mapping. However, some setup work is required to prepare the Metadata Mapping framework. Also, while
+it's often easy to handle most cases with Metadata Mapping, you can find exceptions that really
+tangle the metadata. It's no surprise that the commercial object-relational mapping tools use
+Metadata Mapping—when selling a product producing a sophisticated Metadata Mapping is always worth
+the effort.
+
+Metadata Mapping can interfere with refactoring, particularly if you're using automated tools. If
+you change the name of a private field, it can break an application unexpectedly. Even automated
+refactoring tools won't be able to find the field name hidden in a XML data file of a map.
+
 #### Query Object
+
+...
+
 #### Repository
 
+...
