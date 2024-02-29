@@ -1061,7 +1061,28 @@ refactoring tools won't be able to find the field name hidden in a XML data file
 
 #### Query Object
 
-...
+An object that represents a database query.
+
+How it works? A Query Object is an application of the Interpreter pattern geared to represent a SQL
+query. Its primary roles are to allow a client to form queries of various kinds and to turn thos
+object structures into the appropriate SQL string.
+
+A common feature of Query Object is that it can represent queries in the language of the in-memory
+objects rather than the database schema. That means that, instead of using table and column names,
+you can use object and field names. While this isn't important if your objects and database have the
+same structure, it can be very useful if you get variations between the two. In order to perform
+this change of view, the Query Object needs to know how the database structure maps to the object
+structure, a capability that really needs Metadata Mapping.
+
+When to Use It? Query Objects are a pretty sophisticated pattern to put together, so most projects
+don't use them if they have a handbuilt data source layer. You only really need them when you're
+using Domain Model and Data Mapper; you also really need Metadata Mapping to make serious use of
+them. Even then Query Objects aren't always necessary, as many developers are comfortable with SQL.
+You can hide many of the details of the database schema behind specific finder methods.
+
+The advantages of Query Object come with more sophisticated needs: keeping database schemas
+encapsulated, supporting multiple databases, supporting multiple schemas, and optimizing to avoid
+multiple queries.
 
 #### Repository
 
