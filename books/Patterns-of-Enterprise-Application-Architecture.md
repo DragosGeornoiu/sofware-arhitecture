@@ -10,37 +10,44 @@
 
 ....
 
-- Table Data Gateway
-- Row Data Gateway
-- Active Record
-- Data Mapper
-- Lazy Loading
-- Separated Interface Pattern
-- Layer Superype
-- Unit of Work
-- Unit of Work caller registration
-- Unit of Work object registration
-- Unit of Work controller
-- Identity Map
-- Lazy Load
-- Lazy Load by Lazy Initialization
-- Lazy Load by Virtual Proxy
-- Lazy Load by Value Holder
-- Lazy Load by Ghost
-- Identity Field
-- Foreign Key Mapping
-- Association Table Mapping
-- Dependent Mapping
-- Embedded Value
-- Serialized LOB
-- Single Table Inheritance
-- Single Table Inheritance
-- Class Table Inheritance
-- Concrete Table Inheritance
-- Inheritance Mappers
-- Metadata Mapping
-- Query Object
-- Repository
+- ... to add main topics/keywords from first chapters
+- Data Source Architectural Patterns
+    - Table Data Gateway
+    - Row Data Gateway
+    - Active Record
+    - Data Mapper
+    - Lazy Loading
+    - Separated Interface Pattern
+    - Layer Superype
+- Object-Relational Behavioral Patterns
+    - Unit of Work
+    - Unit of Work caller registration
+    - Unit of Work object registration
+    - Unit of Work controller
+    - Identity Map
+    - Lazy Load
+    - Lazy Load by Lazy Initialization
+    - Lazy Load by Virtual Proxy
+    - Lazy Load by Value Holder
+    - Lazy Load by Ghost
+- Object-Relational Structural Patterns
+    - Identity Field
+    - Foreign Key Mapping
+    - Association Table Mapping
+    - Dependent Mapping
+    - Embedded Value
+    - Serialized LOB
+    - Single Table Inheritance
+    - Single Table Inheritance
+    - Class Table Inheritance
+    - Concrete Table Inheritance
+    - Inheritance Mappers
+- Object-Relational Metadata Mapping Patterns
+    - Metadata Mapping
+    - Query Object
+    - Repository
+- Web Presentation Patterns
+    - ...
 - ...
 
 ## Notes
@@ -1086,4 +1093,52 @@ multiple queries.
 
 #### Repository
 
-...
+Mediates between the domain and data mapping layers using a collection-like interface for accessing
+domain objects.
+
+How It Works? Repository is a sophisticated pattern that makes use of a fair number of the other
+patterns described in this book. In fact, it looks like a small piece of an object-oriented database
+and in that way it's similar to Query Object, which development teams may be more likely to
+encounter in an object-relational mapping tool than to build themselves. However, if a team has
+taken the leap and built Query Object, it isn't a huge step to add a Repository capability. When
+used in conjunction with Query Object, Repository adds a large measure of usability to the
+object-relational mapping layer without a lot of effort.
+
+For example, to find person objects by name we first create a criteria object, setting each
+individual criterion like so: criteria.equals(Person.LAST_NAME, "Fowler"), and criteria.like(
+Person.FIRST_NAME, "M"). Then we invoke repository.matching(criteria) to return a list of domain
+objects representing people with the last name Fowler and a first name starting with M. Various
+convenience methods similar to matching (criteria) can be defined on an abstract repository; for
+example, when only one match is expected soleMatch(criteria) might return the found object rather
+than a collection. Other common methods include byObjectId(id), which can be trivially implemented
+using soleMatch.
+
+Compare this with the direct use of Query Object, in which client code may construct a criteria
+object (a simple example of the specification pattern), add() that directly to the Query Object, and
+execute the query. With a Repository, client code constructs the criteria and then passes them to
+the Repository, asking it to select those of its objects that match. From the client code's
+perspective, there's no notion of query "execution"; rather there's the selection of appropriate
+objects through the "satisfaction" of the query's specification. This may seem an academic
+distinction, but it illustrates the declarative flavor of object interaction with Repository, which
+is a large part of its conceptual power.
+
+Under the covers, Repository combines Metadata Mapping with a Query Object to automatically generate
+SQL code from the criteria
+
+When to Use It? In a large system with many domain object types and many possible queries,
+Repository reduces the amount of code needed to deal with all the querying that goes on. Repository
+promotes the Specification pattern (in the form of the criteria object in the examples here), which
+encapsulate s the query to be performed in a pure object-oriented way. Therefore, all the code for
+setting up a query object in specific cases can be removed. Clients need never think in SQL and can
+write code purely in terms of objects.
+
+However, situations with multiple data sources are where we really see Repository coming into its
+own.
+
+### Web Presentation Patterns
+
+#### Model View Controller
+
+.....
+
+
