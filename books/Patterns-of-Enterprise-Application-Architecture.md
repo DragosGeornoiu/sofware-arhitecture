@@ -1139,6 +1139,32 @@ own.
 
 #### Model View Controller
 
+Splits user interface interaction into three distinct roles.
+
+Model View Controller (MVC) is one of the most quoted (and most misquoted) patterns around. It
+started as a framework developed by Trygve Reenskaug for the Smalltalk platform in the late 1970s.
+Since then it has played an influential role in most UI frameworks and in the thinking about UI
+design.
+
+How It Works? MVC considers three roles. The model is an object that represents some information
+about the domain. The view represents the display of the model in the UI. The controller takes user
+input, manipulates the model, and causes the view to update appropriately. In this way UI is a
+combination of the view and the controller.
+
+In MVC there are two principal separations: separating the presentation from the model and
+separating the controller from the view. Of these the separation of presentation from model is one
+of the most fundamental heuristics of good software design.
+
+When to Use It? The value of MVC lies in its two separations. Of these the separation of
+presentation and model is one of the most important design principles in software, and the only time
+you shouldn't follow it is in very simple systems where the model has no real behavior in it anyway.
+As soon as you get some nonvisual logic you should apply the separation. Unfortunately, a lot of UI
+frameworks make it difficult, and those that don't are often taught without a separation. The
+separation of view and controller is less important, so I'd only recommend doing it when it is
+really helpful.
+
+#### Page Controller
+
 .....
 
 
