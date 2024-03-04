@@ -47,7 +47,13 @@
     - Query Object
     - Repository
 - Web Presentation Patterns
-    - ...
+    - Model View Controller 
+    - Page Controller
+    - Front Controller
+    - Template View
+    - Transform View 
+    - Two Step View
+    - Application Controller
 - ...
 
 ## Notes
