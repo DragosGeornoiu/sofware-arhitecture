@@ -47,11 +47,11 @@
     - Query Object
     - Repository
 - Web Presentation Patterns
-    - Model View Controller 
+    - Model View Controller
     - Page Controller
     - Front Controller
     - Template View
-    - Transform View 
+    - Transform View
     - Two Step View
     - Application Controller
 - ...
@@ -1170,6 +1170,35 @@ separation of view and controller is less important, so I'd only recommend doing
 really helpful.
 
 #### Page Controller
+
+An object that handles a request for a specific page or action on a Web site.
+
+How It Works? The basic idea behind a Page Controller is to have one module on the Web server act as
+the controller for each page on the Web site. In practice, it doesn't work out to exactly one module
+per page, since you may hit a link sometimes and get a different page depending on dynamic
+information. More strictly, the controllers tie in to e ch action, which may be clicking a link or a
+button.
+
+The basic responsibilities of a Page Controller are:
+
+- Decode the URL and extract any form data to figure out all the data for the action.
+- Create and invoke any model objects to process the data. All relevant data from the HTML request
+  should be passed to the model so that the model objects don't need any connection to the HTML
+  request.
+- Determine which view should display the result page and forward the model information to it.
+
+The Page Controller needn't be a single class but can invoke helper objects. This is particularly
+useful if several handlers have to do similar tasks. A helper class can then be a good spot to put
+any code that would otherwise be duplicated.
+
+When to Use It? Page Controller works particularly well in a site where most of the controller logic
+is pretty simple. In this case most URLs can be handled with a server page and the more complicated
+cases with helpers. When your controller logic is simple, Front Controller adds a lot of overhead.
+It's not uncommon to have a site where some requests are dealt with by Page Controllers and others
+are dealt with by Front Controllers, particularly when a team is refactoring from one to another.
+Actually, the two patterns mix without too much trouble.
+
+#### Front Controller
 
 .....
 
