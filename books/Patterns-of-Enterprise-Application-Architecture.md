@@ -1171,10 +1171,10 @@ really helpful.
 
 #### Page Controller
 
-An object that handles a request for a specific page or action on a Web site.
+An object that handles a request for a specific page or action on a Website.
 
 How It Works? The basic idea behind a Page Controller is to have one module on the Web server act as
-the controller for each page on the Web site. In practice, it doesn't work out to exactly one module
+the controller for each page on the Website. In practice, it doesn't work out to exactly one module
 per page, since you may hit a link sometimes and get a different page depending on dynamic
 information. More strictly, the controllers tie in to e ch action, which may be clicking a link or a
 button.
@@ -1199,6 +1199,40 @@ are dealt with by Front Controllers, particularly when a team is refactoring fro
 Actually, the two patterns mix without too much trouble.
 
 #### Front Controller
+
+A controller that handles all requests for a Website.
+
+How it works? A Front Controller handles all calls for a Website, and is usually structured in two
+parts: a Web handles and a command hierarchy. The Web handler is the object that actually receives
+post or get requests from the Web server. It pulls just enaugh information from the URL and the
+request to decide what kind of action to initiate and then delegates to a command to carry out the
+action.
+
+The Web handler itself is usually a fairly simple program that does nothing other than decide which
+command to run.
+
+The Web handler can decide which command to run either statically or dynamically. The static version
+involves parsing the URL and using conditional logic; the dynamic version usually involves taking a
+standard piece of the URL and using dynamic instantiation to create a command class. The static case
+has the advantage of explicit logic, compile time error checking on the dispatch, and lots of
+flexibility in the look of your URLs. The dynamic case allows you to add new commands without
+changing the Web handler. With dynamic invocation you can put the name of the command class into the
+URL or you can use a properties fie that binds URLs to command class names.
+
+A particularly useful pattern to use in conjunction with Front Controller is Intercepting Filter,
+This is essentially a decorator that wraps the handler of the front controller allowing you to build
+a filter chain (or pipeline of filters) to handle issues such as authentication, logging, and locale
+identification. Using filters allows you to dynamically set up the filters to use at configuration
+time.
+
+When to Use It? The Front Controller is a more complicated design than its obvious counterpart, Page
+Controller. It therefore needs a few advantages to be worth the effort. Only one Front Controller
+has to be configured into the Web server; the Web handler does the rest of the dispatching. There's
+just one controller, so you can easily enhance its behavior at runtime with decorators You can have
+decorators for authentication, character encoding, internationalization, and so forth, and add them
+using a configuration file or even while the server is running
+
+#### Template View
 
 .....
 
