@@ -1234,6 +1234,60 @@ using a configuration file or even while the server is running
 
 #### Template View
 
-.....
+Renders information into HTML by embedding markers in an HTML page.
+
+How It Works? The basic idea of Template View is to embed markers into a static HTML page when it's
+written. When the page is used to service a request, the markers are replaced by the results of some
+computation, such as a database query. This way the page can be laid out in the usual manner, often
+with WYSIWYG editors, often by people who aren't programmers. The markers then communicate with real
+programs to put in the results.
+
+Putting a lot of scriptlets into the page makes it too easy to mingle the different layers of an
+enterprise application. When domain logic starts turning up on server pages it becomes far too
+difficult to structure it well and far too easy to duplicate it across different server pages. All
+in all, the worst code I've seen in the last few years has been server page code.
+
+Helper Object. The key to avoiding scriptlets is to provide a regular object as a helper to each
+page. This helper has all the real programming logic. The page only has calls into it, which
+simplifies the page and makes it a m Template View.
+
+The issue comes when you want to have conditional display, you end up still having logic in the
+template. They should be avoided, as they are a code smell, but that is not always possible. In
+either case it's important that the condition be done based on a single Boolean property of the
+helper. Putting any more complex expression into the page is actually putting the logic into the
+page itself.
+
+Another issue comes from Iterations. Iterating over a collection presents similar issues. If you
+want a table where each line corresponds to a line item on an order, you need a construct that
+allows easy display of information for each line. Here it's hard to avoid a general iteration over a
+collection tag, but it usually works simply enough to fit in quite well.
+
+When Template View is taking on responsabilities beyond the view it's importand to ensure that these
+responsabilities are handled by the helper, not by the page.
+
+When to Use It? For implementing the view in Model View Controller the main choice is between
+Template View and Transform View. The strength of Template View is that it allows you to compose the
+content of the page by looking at the page structure. This seems to be easier for most people to do
+and to learn. In particular it nicely supports the idea of a graphic designer laying out a page with
+a programmer working on the helper.
+
+You need good discipline to keep the page simple and display oriented, putting logic in the helper.
+The second weakness is that Template View is harder to test than Transform View. Most
+implementations of Template View.
+
+When using a JSP as a view only, it's always be invoked from a controller rather than directly from
+the servlet container. Thus, it's important to pass to the JSP any information it will need to
+figure out what to display. A good way to do this is to have the controller create a helper object
+and pass it to the JSP using the HTTP request.
+
+```java
+<jsp:useBean id="helper"type="actionController.ArtistHelper"scope="request"/>
+```
+
+#### Transform View
+
+
+
+
 
 
