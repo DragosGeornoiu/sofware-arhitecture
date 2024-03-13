@@ -1286,8 +1286,31 @@ and pass it to the JSP using the HTTP request.
 
 #### Transform View
 
+A view that processes domain data element by element and transforms it into HTML.
 
+How It Works? The basic notion of Transform View is writing a program that looks at domain-oriented
+data and converts it to HTML. The program walks the structure of the domain data and, as it
+recognizes each form of domain data, it writes out the particular piece of HTML for it. If you think
+about this in an imperative way, you might have a method called renderCustomer that takes a customer
+object and renders it into HTML. If the customer contains a lot of orders, this method loops over
+the orders calling renderOrder.
 
+The key difference between Transform View and Template View is the way in which the view is
+organized. A Template View is organized around the output. A Transform View is organized around
+separate transforms for each kind of input element. The transform is controlled by something like a
+simple loop that looks at each input element, finds the appropriate transform for that element, and
+then calls the transform on it. A typical Transform View's rules can be arranged in any order
+without affecting the resulting output.
+
+When to Use It? The choice between a Transform View and a Template View mostly comes down to which
+environment the team working on the view software prefers. The presence of tools is a key factor
+here. There are more and more HTML editors that you can use to write Template Views. Tools for XSLT
+are, at least so far, muc less sophisticated. Also, XSLT can be an awkward language to master
+because of its functional programming style coupled with its awkward XML syntax.
+
+#### Two Step View
+
+...
 
 
 
