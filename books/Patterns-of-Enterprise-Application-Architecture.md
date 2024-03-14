@@ -1310,7 +1310,33 @@ because of its functional programming style coupled with its awkward XML syntax.
 
 #### Two Step View
 
-...
+Turns domain data into HTML in two steps: first by forming some kind of logical page, then rendering
+the logical page into HTML
 
+How It Works? The key to this pattern is in making the transformation to HTML a two-stage process.
+The first stage assembles the information in a logical screen structure that is suggestive of the
+display elements yet contains no HTML. The second stage takes that presentation-oriented structure
+and renders it into HTML. This intermediate form is a kind of logical screen. Its elements might
+include things like fields, headers, footers, tables, choices, and the like.
+
+There are several ways to build a Two Step View. Perhaps the easiest is with two-step XSLT.
+Single-step XSLT follows the approach in Transform View, in which each page has a single XSLT style
+sheet that transforms the domain-oriented XML into HTML. In the two-step approach there are two XSLT
+style sheets. The first-stage style sheet transforms the domain-oriented XML into
+presentation-oriented XML, the second stage style sheet renders that XML into HTML.
+
+When to Use It? Two Step View's key value comes from the separation of first and second stages,
+allowing you to make global changes more easily. It helps to think of two situations:
+multiappearance Web applications and single-appearance Web applications. Multiappearance apps are
+the rarer breed but a growing one. In them the same basic functionality is provided through multiple
+organizations and each organization has its own distinct look.
+
+With a single-stage view (either Template View or Transform Vie, you build one view module per Web
+page. With a Two Step View you have two stages: one first-stage module per page and one second-stage
+module for the entire application.
+
+#### Application Controller
+
+.....
 
 
