@@ -54,6 +54,9 @@
     - Transform View
     - Two Step View
     - Application Controller
+- Distribution Patterns
+    - Remote Facade
+    - Data Transfer Object
 - ...
 
 ## Notes
@@ -1337,6 +1340,37 @@ module for the entire application.
 
 #### Application Controller
 
-.....
+A centralized point for handling screen navigation and the flow of an application.
+
+Some applications contain a significant amount of logic about the screens to use at different
+points, which may involve invoking certain screens at certain times in an application. This is the
+wizard style of interaction, where the user is led through a series of screens in a certain order.
+In other cases we may see screens that are only brought in under certain conditions, or choices
+between different screens that depend on earlier input.
+
+How It Works? An Application Controller has two main responsibilities: deciding which domain logic
+to run and deciding the view with which display the response. To do this it typically holds two
+structured collections of class references, one for domain commands to execute against in the domain
+layer and one of views.
+
+For both the domain commands and the view, the application controller needs a way to store something
+it can invoke. A Command, from the Command Pattern, is a good choice, since it allows it to easily
+get hold of and run a block of code. Languages that can manipulate functions can hold references to
+them. Another option is to hold a string that can be used to invoke a method by reflection. The
+domain commands can be command objects that are part of the Application Controller layer, or they
+can be references to a Transaction Script or domain object methods in the domain layer.
+
+When to Use It? If the flow and navigation of your application are simple enough so that anyone can
+visit any screen in pretty much any order, there's little value in a Application Controller. The
+strength of an Application Controller comes from definite rules about the order in which pages
+should be visited and different views depending on the state of objects. A good signal to use an
+Application Controller is if you find yourself having to make similar changes in lots of different
+places when your application's flow changes.
+
+### Distribution Patterns
+
+#### Remote Facade
+
+....
 
 
